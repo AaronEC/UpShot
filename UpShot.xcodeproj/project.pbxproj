@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1B61A00927D6390F00D02479 /* UpShotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B61A00827D6390F00D02479 /* UpShotApp.swift */; };
-		1B61A00B27D6390F00D02479 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B61A00A27D6390F00D02479 /* ContentView.swift */; };
+		1B61A00B27D6390F00D02479 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B61A00A27D6390F00D02479 /* HomeView.swift */; };
 		1B61A00D27D6391100D02479 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B61A00C27D6391100D02479 /* Assets.xcassets */; };
 		1B61A01027D6391100D02479 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B61A00F27D6391100D02479 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -16,7 +16,7 @@
 /* Begin PBXFileReference section */
 		1B61A00527D6390F00D02479 /* UpShot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UpShot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B61A00827D6390F00D02479 /* UpShotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpShotApp.swift; sourceTree = "<group>"; };
-		1B61A00A27D6390F00D02479 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		1B61A00A27D6390F00D02479 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		1B61A00C27D6391100D02479 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1B61A00F27D6391100D02479 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -52,7 +52,7 @@
 			isa = PBXGroup;
 			children = (
 				1B61A00827D6390F00D02479 /* UpShotApp.swift */,
-				1B61A00A27D6390F00D02479 /* ContentView.swift */,
+				1B61A00A27D6390F00D02479 /* HomeView.swift */,
 				1B61A00C27D6391100D02479 /* Assets.xcassets */,
 				1B61A00E27D6391100D02479 /* Preview Content */,
 			);
@@ -137,7 +137,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B61A00B27D6390F00D02479 /* ContentView.swift in Sources */,
+				1B61A00B27D6390F00D02479 /* HomeView.swift in Sources */,
 				1B61A00927D6390F00D02479 /* UpShotApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
