@@ -91,7 +91,7 @@ struct CharacterSelectView: View {
                     .padding()
                     .frame(width: proxy.size.width, height: proxy.size.height, alignment: .center)
                     .indexViewStyle(.page(backgroundDisplayMode: .always))
-                    .background(Color(.systemGroupedBackground))
+                    .background(Color("AltColour"))
                 }
 
                 Text("Select your opponent!")
@@ -175,89 +175,139 @@ struct MatchView: View {
     ]
 
     var body: some View {
-        ZStack{
-                        
-            VStack{
-                
-                Text(charNames[Int(charID) ?? 0] + " Vs " + userName)
-                    .font(.system(size: 32, weight: .bold))
-                    .multilineTextAlignment(.center)
+
+        VStack{
+            
+            Text(charNames[Int(charID) ?? 0] + " Vs " + userName)
+                .font(.system(size: 32, weight: .bold))
+                .multilineTextAlignment(.center)
+            
+            Spacer()
+            
+            // Score Display
+            HStack {
                 
                 Spacer()
                 
-                // Score Display
-                HStack {
+                // Opponent
+                VStack {
                     
-                    GeometryReader { geo in
-                        Image("Character" + charID)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: geo.size.width * 0.25)
-                    }
+                    Spacer()
                     
-                    // Opponent
                     VStack {
                         ForEach(Array(oppValue), id: \.self) { character in
                             if character == "x" {
                                 Text("10")
                                     .bold()
-                                    .font(.system(size: 32))
+                                    .font(.system(size: 28))
                                     .foregroundColor(Color("MainColour"))
                             } else {
                                 Text(String(character))
                                     .bold()
-                                    .font(.system(size: 32))
+                                    .font(.system(size: 28))
                                     .foregroundColor(Color("MainColour"))
                             }
                         }
-                        Spacer()
-                        Text("Total:")
-                        Text(String(oppTotal))
-                            .bold()
-                            .font(.system(size: 58))
-                        Spacer()
                     }
-                    .padding(.trailing, 15)
+                    .background(
+                        Color("AltColour")
+                            .frame(width: 100)
+                            .opacity(0.75)
+                            .cornerRadius(10)
+                            .padding(.vertical, -10)
+                    )
+                    
+                    Spacer()
+
+                    VStack {
+                        Text("Total:")
+                    Text(String(oppTotal))
+                        .bold()
+                        .font(.system(size: 48))
+                    }
+                    .background(
+                        Color("AltColour")
+                            .frame(width: 100)
+                            .opacity(0.75)
+                            .cornerRadius(10)
+                            .padding(.top, -10)
+                    )
+                    
+                    Spacer()
+
+                }
+                .background(
+                    Image("Character" + charID)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 387, height: 200)
+                        .padding(.leading, -150)
+                )
+                .padding(.leading, 30)
+                
+                Spacer()
+                
+                // Player
+                VStack {
                     
                     Spacer()
                     
-                    // Player
                     VStack {
                         ForEach(Array(value), id: \.self) { character in
                             if character == "x" {
                                 Text("10")
                                     .bold()
-                                    .font(.system(size: 32))
+                                    .font(.system(size: 28))
                                     .foregroundColor(Color("MainColour"))
                             } else {
                                 Text(String(character))
                                     .bold()
-                                    .font(.system(size: 32))
+                                    .font(.system(size: 28))
                                     .foregroundColor(Color("MainColour"))
                             }
                         }
-                        Spacer()
-                        Text("Total:")
-                        Text(String(total))
-                            .bold()
-                            .font(.system(size: 58))
-                        Spacer()
                     }
-                    .padding(.leading, 15)
+                    .background(
+                        Color("AltColour")
+                            .frame(width: 100)
+                            .opacity(0.75)
+                            .cornerRadius(10)
+                            .padding(.vertical, -10)
+                    )
                     
-                    VStack {
-                        Spacer()
-                        GeometryReader { geo in
-                            Image("Target")
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: geo.size.width * 0.15, height: geo.size.height * 0.3)
-                                .padding([.top, .leading], 50)
-                        }
-                    }
-                    .padding(.top, 50)
-                }
+                    Spacer()
 
+                    VStack {
+                        Text("Total:")
+                    Text(String(total))
+                        .bold()
+                        .font(.system(size: 48))
+                    }
+                    .background(
+                        Color("AltColour")
+                            .frame(width: 100)
+                            .opacity(0.75)
+                            .cornerRadius(10)
+                            .padding(.top, -10)
+                    )
+                    
+                    Spacer()
+
+                }
+                .background(
+                    Image("Target")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 87, height: 150)
+                        .padding(.trailing, -150)
+                )
+                .padding(.trailing, 30)
+                
+                Spacer()
+                
+            }
+
+            HStack {
                 if complete {
                     NavigationLink(destination: ResultsView(result: getResult(), score: getScore(), username: userName), label: {Text("Results Page")
                             .bold()
@@ -269,45 +319,66 @@ struct MatchView: View {
                     })
                 } else if shoot {
                     Text("Enter your score:")
+                        .foregroundColor(.white)
                 } else {
                     VStack {
                         Text(charNames[Int(charID) ?? 0] + " is shooting...")
                             .opacity(visible ? 0 : 1)
+                            .foregroundColor(.white)
                     }
-                }
-                            
-                Spacer()
-
-                // Input Buttons
-                ForEach(buttons, id: \.self) { row in
-                    HStack {
-                        ForEach(row, id: \.self) {item in
-                            Button(action: {
-                                self.didTap(button: item)
-                            }, label: {
-                                Text(item.rawValue)
-                                    .font(.system(size: 28))
-                                    .frame(
-                                        width: self.buttonWidth(item: item),
-                                        height: self.buttonHeight()
-                                    )
-                                    .background(item.buttonColour)
-                                    .foregroundColor(item.numberColour)
-                                    .overlay(
-                                        RoundedRectangle(
-                                            cornerRadius: 15
-                                        )
-                                            .stroke(Color(.black), lineWidth: 4)
-                                        )
-                            })
-                        }
-                        .cornerRadius(15)
-                    }
-                    .padding(.horizontal, 20)
-                    .disabled(!visible)
                 }
             }
+            .background(
+                Color(.black)
+                    .padding(.horizontal, -2000)
+                    .padding(.vertical, -5)
+            )
+            
+                        
+            Spacer()
+            
+            
+
+            // Input Buttons
+                VStack {
+                    ForEach(buttons, id: \.self) { row in
+                        HStack {
+                            ForEach(row, id: \.self) {item in
+                                Button(action: {
+                                    self.didTap(button: item)
+                                }, label: {
+                                    Text(item.rawValue)
+                                        .font(.system(size: 28))
+                                        .frame(
+                                            width: self.buttonWidth(item: item),
+                                            height: self.buttonHeight()
+                                        )
+                                        .background(item.buttonColour)
+                                        .foregroundColor(item.numberColour)
+                                        .overlay(
+                                            RoundedRectangle(
+                                                cornerRadius: 15
+                                            )
+                                                .stroke(Color(.black), lineWidth: 4)
+                                            )
+                                })
+                            }
+                            .cornerRadius(15)
+                        }
+                        .padding(.horizontal, 20)
+                        .disabled(!visible)
+                    }
+                }
+                .padding(.top, 10)
+                .background(
+                    Color("AltColour")
+                        .opacity(0.75)
+                        .cornerRadius(10)
+                        .padding([.leading, .trailing, .bottom], -50)
+                        .padding(.top, -5)
+                )
         }
+    
     }
     
     private func pulsateText() {
@@ -408,7 +479,7 @@ struct MatchView: View {
         return (UIScreen.main.bounds.width) / 4
     }
     func buttonHeight() -> CGFloat {
-        return (UIScreen.main.bounds.width) / 7
+        return (UIScreen.main.bounds.width) / 9
     }
 }
 
@@ -544,7 +615,7 @@ struct ContentView_Previews: PreviewProvider {
 //            ResultsView(result: "Draw", score: "23 - 45", username: "Aaron")
 //            HomeView()
 //            CharacterSelectView(userName: "Aaron")
-            MatchView(userName: "Aaron", charNames: ["Joey","Sarah", "Beth"], charID: "2")
+            MatchView(userName: "Aaron", charNames: ["Joey","Sarah", "Beth"], charID: "0")
         }
     }
 }
