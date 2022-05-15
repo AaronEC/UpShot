@@ -2,19 +2,20 @@
 //  MatchViewModel.swift
 //  UpShot
 //
-//  Created by Aaron Cardwell on 14/05/2022.
+//  Created by Aaron Cardwell on 14/01/2022.
 //
 
 import SwiftUI
 
 final class MatchViewModel: ObservableObject {
     
+    // Player score variables
     @Published var value = "------"
     @Published var total = 0
-    
+    //Opponent score variables
     @Published var oppValue = "------"
     @Published var oppTotal = 0
-    
+    //Prompt control variables
     @Published var visible = true
     @Published var shoot = true
     @Published var complete = false
@@ -40,7 +41,8 @@ final class MatchViewModel: ObservableObject {
         return String(oppTotal) + " - " + String(total)
     }
     
-    func oppScore(charID: String) {
+    // Calculates the opponents next score with CharID as difficulty modifier.
+    private func oppScore(charID: String) {
                 
         var randomInt = Int.random(in: 0..<11)
         
@@ -48,6 +50,7 @@ final class MatchViewModel: ObservableObject {
             
             let difficulty = (Int(charID) ?? 0) * 4
 
+            // More chance of good score for higher difficulty.
             for _ in 0...difficulty {
                 if randomInt != 9 && randomInt != 10 {
                     randomInt = Int.random(in: 0..<11)
@@ -56,6 +59,8 @@ final class MatchViewModel: ObservableObject {
             
         }
         
+        // This handles formatting of double digit scores & misses.
+        // and calculates total score.
         if randomInt == 10 {
             self.oppValue.removeFirst()
             self.oppValue = self.oppValue + "x"
@@ -69,7 +74,8 @@ final class MatchViewModel: ObservableObject {
             self.oppValue = "\(self.oppValue)\(randomInt)"
             self.oppTotal += randomInt
         }
-        
+
+        // Enable match complete status after last arrow.
         if self.value.first != "-" {
             complete.toggle()
             return
@@ -85,24 +91,17 @@ final class MatchViewModel: ObservableObject {
     
     func didTap(button: scoreButtons, charID: String) {
         
-        shoot = false
-        
-        class TryThis {
-            func getSomethingLater(_ number: Double) async -> String {
-                // sleep for 3 seconds, then return (to simulate taking a shot)
-                Thread.sleep(forTimeInterval: 3)
-                return String(format: ">>>%8.2f<<<", number)
-            }
-        }
-
-        let tryThis = TryThis()
-        
-        let number = button.rawValue
-        
+        // Is it the end of the match?
         if self.oppValue.first != "-" {
             return
         }
         
+        shoot = false
+        
+        let number = button.rawValue
+        
+        // More handling of double digit numbers
+        // For player this time.
         if number == "10" {
             self.value.removeFirst()
             self.value = self.value + "x"
@@ -113,13 +112,28 @@ final class MatchViewModel: ObservableObject {
             self.total += Int(number) ?? 0
         }
         
+        // This causes a delay in the system by sleeping thread
+        // to simulate that it takes some time for the AI to shoot.
+        class Delay {
+            func pause(_ number: Double) async {
+                // sleep for 3 seconds, then return (to simulate taking a shot)
+                Thread.sleep(forTimeInterval: number)
+                return
+            }
+        }
+
+        let custom_delay = Delay()
         pulsateText()
         
         Task {
-            await tryThis.getSomethingLater(1)
-            oppScore(charID: charID)
-            visible.toggle()
-            shoot = true
+            await custom_delay.pause(3)
+            // Must be sent to mainthread as is UI update to avoid
+            // thread collisions, race conditions, dead locks, etc.
+            DispatchQueue.main.async{
+                self.oppScore(charID: charID)
+                self.visible.toggle()
+                self.shoot = true
+            }
         }
     }
 }
